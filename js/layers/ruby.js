@@ -203,7 +203,7 @@ addLayer("r", {
                 cost = tmp[this.layer].buyables[this.id].cost
 
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
-                console.log(format(x));
+//                console.log(format(x));
                 let newCost = Decimal.pow(new Decimal(1.1), x.pow(2));
                 newCost = newCost.times("1e12");
                 newCost = newCost.floor();
