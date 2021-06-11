@@ -232,7 +232,7 @@ var cnItems = {
     'Level gain is multiplied by log10(level+1)+1 NOT DEPENDED ON CURRENT CHALLENGE': '等级增益乘以log10(等级+1)+1与当前挑战无关',
     'Adds +N% of skill/sec, where N = log[6.18](total treasures + 1)*10': '增加 +N% 技能/秒, 当 N = log[6.18](总珍宝 + 1)*10',
     'C8/sec is multiplied by 9th milestone effect value: 1.4692119257558902e35': 'C8/秒乘以9个里程碑效应值:1.4692119257558902e35',
-    '': '',
+    'Removes ability to treasure prestige, but gain 10% of treasure value / sec': '移除珍宝声望的能力，但获得珍宝价值的10%/秒',
     '': '',
     '': '',
     '': '',
@@ -403,7 +403,7 @@ var cnPrefix = {
     "Multiplies treasure effects by ": "宝物效果乘以",
     "Removes ability to prestige skill, but Autoskill fun is 10 times effective": "消除声望技能的能力，但自动技能的乐趣是有效技能的10倍",
     "Treasure gain is multiplied by log1000(skills + 1)+1": "珍宝收益乘以log1000(技能+1)+1",
-    "": "",
+    "C8/sec is multiplied by 9th milestone effect value: ": "C8/秒 乘以第 9 个里程碑效果值：",
     "": "",
     "": "",
     "": "",
@@ -518,6 +518,7 @@ var cnExcludeWhole = [
     /^([\d\.,]+)x$/,
     /^([\d\.,]+)$/,
     /^([\d\.]+)$/,
+    /^1 \+ floor\(\(skills\/10\)\^2\) \= ([\d\.,]+)$/,
 ];
 var cnExcludePostfix = [
 ]
@@ -554,6 +555,8 @@ var cnRegReplace = new Map([
     [/^Get (.+) quests$/, '获得 $1 个任务'],
     [/^Get (.+) skills$/, '获得 $1 技能'],
     [/^Get (.+) skill$/, '获得 $1 技能'],
+    [/^, Treasures help you get more skills. Lol. Increases your max level by (.+). Increases your skill powered gain by (.+)\%. Needs 60 really last \(9\) quest challenge competitions for treasure prestige.$/, '，宝物助你获得更多技能。 哈哈。 将您的最高等级提高 $1。 将你的技能能量增益提高 $2\%。 需要 60 真最后 \(9\) 任务挑战赛才能获得宝物声望。'],
+    [/^, Skills can make you level up and complete first two layers faster. Total S. divides loot, quests and ruby exp by (.+). Multiplies XP and gold exponents by (.+). Needs 100 last \(8\) quest challenge competitions for skill prestige.$/, '，技能可以让你升级并更快地完成前两层。 总 S. 将战利品、任务和红宝石经验除以 $1。 将 XP 和黄金指数乘以 $2。 需要 100 次最后 \(8\) 次任务挑战赛才能获得技能声望。'],
     [/^Exp, Gold and Level gain are set to (.+). Their base exponents are also set to (.+)$/, '经验，黄金和等级增益设置为 $1。 他们的基本指数也设置为 $2'],
     [/^total skills squared:  \+(.+) \(Hardcapped at (.+)\). \+(.+) 2nd ruby buyables\/tick.$/, '总技能平方：\+$1（上限为$2）。 \+$3第二颗红宝石可买\/tick。'],
     [/^You can progress faster. Multiplies xp, gold and level gain by (.+)\^\(total_upgrades\). Now\: x(.+)$/, '您可以更快地进步。 将经验，黄金和等级增益乘以 $1\^（总计升级）。 现在：x$2'],
@@ -573,6 +576,7 @@ var cnRegReplace = new Map([
     [/^(.+) \/ (.+) gold\t\t\n\t\t$/, ' $1 \/ $2 黄金\t\t\n\t\t'],
     [/^([\d\.]+)e([\d\.,]+) \/ ([\d\.]+)e([\d\.,]+) xp\t\t\n\t\t$/, ' $1e$2 \/ $3e$4 经验\t\t\n\t\t'],
     [/^([\d\.]+)e([\d\.,]+) \/ e([\d\.]+)e([\d\.,]+) exp\t\t\n\t\t$/, ' $1e$2 \/ $3e$4 经验\t\t\n\t\t'],
+    [/^e([\d\.,]+)e([\d\.]+) \/ e([\d\.]+)e([\d\.,]+) exp\t\t\n\t\t$/, ' $1e$2 \/ $3e$4 经验\t\t\n\t\t'],
     [/^Req\: (.+) \/ (.+) gold\t\t\n\t\t$/, '要求\: $1 \/ $2 黄金\t\t\n\t\t'],
     [/^Req\: (.+) \/ (.+) exp\t\t\n\t\t$/, '要求\: $1 \/ $2 经验\t\t\n\t\t'],
     [/^(\d+) Royal points$/, '$1 皇家点数'],
