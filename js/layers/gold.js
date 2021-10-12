@@ -98,7 +98,9 @@ addLayer("g", {
 
         mult = mult.times((hasUpgrade("l", 52)) ? upgradeEffect("l", 52) : new Decimal(1));
 
-        mult = mult.times(layers["s"].milestones[0].effect());
+        if (hasMilestone("s", 0)) {
+            mult = mult.times(layers["s"].milestones[0].effect());
+        }
         
         if (inChallenge("q", 11)) mult = mult = mult.pow(challengeVar("q", 11));
         else {
@@ -168,7 +170,7 @@ addLayer("g", {
         11: {
             title: "Moneys give levels give moneys",
             description: "Gold and Level gain is multiplied by 10",
-            cost() { return new Decimal(1).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(5).pow(layers.g.costDecrement()) },
             unlocked() { return player[this.layer].unlocked },
             effect() { 
                 let eff = new Decimal(10);
@@ -179,7 +181,7 @@ addLayer("g", {
         12: {
             title: "Gold -> Exp",
             description: "Total gold boosts exp gain",
-            cost() { return new Decimal(100).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(50).pow(layers.g.costDecrement()) },
             unlocked() { return (hasUpgrade(this.layer, 11)) },
             effect() { 
                 let eff = player[this.layer].total.div(10).pow(0.2);
@@ -218,7 +220,7 @@ addLayer("g", {
         13: {
             title: "You still need XP",
             description: "Gold gain is multiplied by log10(xp + 10)",
-            cost() { return new Decimal(250).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(100).pow(layers.g.costDecrement()) },
             unlocked() { return (hasUpgrade(this.layer, 12)) },
             effect() { 
                 let eff = player.xp.points.plus(10).log10();
@@ -228,7 +230,7 @@ addLayer("g", {
         },
         14: {
             title: "More XP from gold",
-            cost() { return new Decimal(1000).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(500).pow(layers.g.costDecrement()) },
             softcap() { return new Decimal(10) },
             hardcap() { return new Decimal(100) },
             very_hardcap() { return new Decimal(100000) },
@@ -270,7 +272,7 @@ addLayer("g", {
         15: {
             title: "You can't buy this once",
             description: "Unlocks first buyable upgrade and a new row of xp upgrades",
-            cost() { return new Decimal(28).pow(layers.g.costDecrement()).times((hasMilestone("s", 6) ? 0 : 1)) },
+            cost() { return new Decimal(27).pow(layers.g.costDecrement()).times((hasMilestone("s", 6) ? 0 : 1)) },
             currencyDisplayName: "levels",
             currencyInternalName: "points",
             currencyLayer: "",
@@ -279,7 +281,7 @@ addLayer("g", {
         21: {
             title: "Stronk Buff",
             description: "Multiplies XP, gold and lv gain by value of your level + 1",
-            cost() { return new Decimal(100000).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(1e5).pow(layers.g.costDecrement()) },
             unlocked() { return ((hasUpgrade("xp", 35) && hasUpgrade("g", 15)) || inChallenge("q", 13)) },
             effect() { 
                 let eff = player.points.plus(1);
@@ -290,7 +292,7 @@ addLayer("g", {
         22: {
             title: "Even More Gold",
             description: "Multiplies Gold by log10(xp + 10)",
-            cost() { return new Decimal(1e7).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(5e7).pow(layers.g.costDecrement()) },
             unlocked() { return (hasUpgrade("g", 21)) },
             effect() { 
                 let eff = player.xp.points.plus(10).log10();
@@ -301,7 +303,7 @@ addLayer("g", {
         23: {
             title: "Slow road to 100",
             description: "Increases a bit level gain until lvl 100",
-            cost() { return new Decimal(2.5e8).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(1e9).pow(layers.g.costDecrement()) },
             unlocked() { return (hasUpgrade("g", 22)) },
             effect() { 
                 let maxLv = new Decimal(101);
@@ -314,7 +316,7 @@ addLayer("g", {
         24: {
             title: "Better passives",
             description: "Passive upgrades effects are multiplied by log10(lv + 10)",
-            cost() { return new Decimal(1e9).pow(layers.g.costDecrement()) },
+            cost() { return new Decimal(2e9).pow(layers.g.costDecrement()) },
             unlocked() { return (hasUpgrade("g", 23)) },
             effect() { 
                 let eff = player.points.plus(10).log10();
