@@ -14,11 +14,18 @@ function getPointGen() {
     maxLevel = maxLevel.plus(layers.q.challenges[19].rewardEffect());
     maxLevel = maxLevel.plus(layers["t"].effect());
 
+    if (hasMilestone("d", 4)) {
+        maxLevel = maxLevel.times(2);
+    }
+
+
     let baseGain = new Decimal(1);
     if (hasUpgrade("xp", 11)) {
         baseGain = baseGain.plus(new Decimal(1));
     }
     if ((format(tmp["xp"].resetGain) == "NaN")) tmp["xp"].resetGain = new Decimal(0);
+    baseGain = baseGain.times((hasMilestone("d", 1)) ? new Decimal(1000000) : new Decimal(1));
+    baseGain = baseGain.times((hasMilestone("d", 2)) ? new Decimal(1e100) : new Decimal(1));
     baseGain = baseGain.times((hasUpgrade("xp", 12)) ? upgradeEffect("xp", 12) : new Decimal(1));
     baseGain = baseGain.times((hasUpgrade("xp", 14)) ? upgradeEffect("xp", 14) : new Decimal(1));
     baseGain = baseGain.times((hasUpgrade("xp", 21)) ? upgradeEffect("xp", 21) : new Decimal(1));
@@ -59,8 +66,9 @@ function getPointGen() {
     
     baseGain = baseGain.times((hasUpgrade("xp", 45)) ? new Decimal(1000) : new Decimal(1));
 
-    
-    baseGain = baseGain.times(layers["s"].milestones[0].effect());
+    if (hasMilestone("s", 0)) {
+        baseGain = baseGain.times(layers["s"].milestones[0].effect());
+    }
 
     if (inChallenge("q", 11)) {
         baseGain = baseGain.pow(challengeVar("q", 11));
@@ -104,6 +112,7 @@ function getPointGen() {
         baseGain = baseGain.times(upgradeEffect("t", 23));
     }
 
+    baseGain = baseGain.times(layers["d"].effect());
 
     let powPower = new Decimal(2);
     if (hasUpgrade("xp", 41)) powPower = new Decimal(1.9);
