@@ -60,6 +60,11 @@ addLayer("q", {
         11: {
             name: "Typical Challenge",
             completionLimit: 12,
+            challengeDescription() {
+                return "Level, Exp and Gold gain are powered to ^" + this.powers() 
+                + ". This challenge reward doesn't work here.<br>"+challengeCompletions(this.layer, this.id)
+                 + "/" + this.completionLimit + " completions";
+            },
             powers() {
                 if (challengeCompletions(this.layer, this.id) == 0) return 0.5;
                 if (challengeCompletions(this.layer, this.id) == 1) return 0.4;
@@ -74,11 +79,6 @@ addLayer("q", {
                 if (challengeCompletions(this.layer, this.id) == 10) return 0.01;
                 if (challengeCompletions(this.layer, this.id) == 11) return 0.001;
                 if (challengeCompletions(this.layer, this.id) == 12) return 0.001;
-            },
-            challengeDescription() {
-                return "Level, Exp and Gold gain are powered to ^" + this.powers() 
-                + ". This challenge reward doesn't work here.<br>"+challengeCompletions(this.layer, this.id)
-                 + "/" + this.completionLimit + " completions";
             },
             unlocked() { return (hasMilestone("q", 0) || inChallenge("q", 11)) },
             goal(){
@@ -96,6 +96,7 @@ addLayer("q", {
                 if (challengeCompletions(this.layer, this.id) == 11) return new Decimal(1e8);
                 if (challengeCompletions(this.layer, this.id) == 12) return new Decimal(1e8);
             },
+
             currencyDisplayName: "exp", // Use if using a nonstandard currency
             currencyInternalName: "points", // Use if using a nonstandard currency
             currencyLayer: "xp", // Leave empty if not in a layer
@@ -120,7 +121,9 @@ addLayer("q", {
             },
             rewardDisplay() { return "^" + format(this.rewardEffect())+" to exp/levels/gold gain" },
             rewardDescription: "Powering exp, lv and gold production.",
-            onComplete() {} // Called when you complete the challenge
+            onComplete() {console.log("hiii")}, // Called when you successfully complete the challenge
+            onEnter() {console.log("So challenging")},
+            onExit() {console.log("Sweet freedom!")}
         },
         12: {
             name: "Tetration",
@@ -965,7 +968,7 @@ addLayer("q", {
             }
         }
 
-        if (player.q.points.lte(1)) {
+        if (player.q.points.lte(0)) {
             if (inChallenge("q", 11)) {
                 delete player["q"].activeChallenge;
             }

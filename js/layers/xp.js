@@ -2,7 +2,7 @@ addLayer("xp", {
     name: "xp", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "XP", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
-    row: 1,
+    row: 0,
     startData() { return {
         unlocked: true,
         points: new Decimal(0),
@@ -11,6 +11,7 @@ addLayer("xp", {
     resource: "experience", // Name of prestige currency
     baseResource: "levels", // Name of resource prestige is based on
     baseAmount() {return player.points.floor()}, // Get the current amount of baseResource
+    roundUpCost: true,
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     costDecrement() {
         if (hasUpgrade('l', 54)) {
@@ -100,20 +101,20 @@ addLayer("xp", {
             mult = mult.times(layers["s"].milestones[0].effect());
         }
 
-        if (inChallenge("q", 11)) mult = mult.pow(challengeVar("q", 11));
+        if (inChallenge("q", 11)) mult = mult.pow(challengeNerf("q", 11));
         else {
             mult = mult.pow(layers.q.challenges[11].rewardEffect());
         }
-        if (inChallenge("q", 12)) mult = mult.tetrate(challengeVar("q", 12));
+        if (inChallenge("q", 12)) mult = mult.tetrate(challengeNerf("q", 12));
 
 
         if (inChallenge("q", 15)) {
-            mult = mult.plus(1).log(challengeVar("q", 15));
+            mult = mult.plus(1).log(challengeNerf("q", 15));
             if (isNaN(mult)) mult = new Decimal(1);
         }
 
         if (inChallenge("q", 16)) {
-            let chavarVal = new Decimal(challengeVar("q", 16));
+            let chavarVal = new Decimal(challengeNerf("q", 16));
             mult = mult.pow(new Decimal(1).div(player.points.times(chavarVal).plus(1)));
             if (isNaN(mult)) mult = new Decimal(1);
         }
@@ -467,8 +468,8 @@ addLayer("xp", {
             unlocked() { return (hasUpgrade(this.layer, 35)) },
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) {
-
+            buy() {
+                let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
                 let newCost = Decimal.pow(new Decimal(2.5), x.pow(1.25));
@@ -490,6 +491,7 @@ addLayer("xp", {
     },
 
     update(diff) {
+        player[this.layer].ticks = new Decimal(1);
         generatePoints("xp", new Decimal(diff).times(buyableEffect("g", 11).plus(hasMilestone("r", 0) ? 1 : 0).plus(hasMilestone("s", 3) ? 10 : 0)));
     },
 

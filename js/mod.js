@@ -113,23 +113,23 @@ function getPointGen() {
     }
 
     if (inChallenge("q", 11)) {
-        baseGain = baseGain.pow(challengeVar("q", 11));
+        baseGain = baseGain.pow(challengeNerf("q", 11));
     }
     else {
         baseGain = baseGain.pow(layers.q.challenges[11].rewardEffect());
     }
 
     if (inChallenge("q", 12)) {
-        baseGain = baseGain.tetrate(challengeVar("q", 12));
+        baseGain = baseGain.tetrate(challengeNerf("q", 12));
     }
 
     if (inChallenge("q", 15)) {
-        baseGain = baseGain.plus(1).log(challengeVar("q", 15));
+        baseGain = baseGain.plus(1).log(challengeNerf("q", 15));
     }
     if ((format(tmp["xp"].resetGain) == "NaN")) baseGain = new Decimal(0);
 
     if (inChallenge("q", 16)) {
-        let chavarVal = new Decimal(challengeVar("q", 16));
+        let chavarVal = new Decimal(challengeNerf("q", 16));
         baseGain = baseGain.pow(new Decimal(1).div(player.points.times(chavarVal).plus(1)));
         if ((format(tmp["xp"].resetGain) == "NaN")) baseGain = new Decimal(1);
     }

@@ -370,7 +370,8 @@ addLayer("l", {
             unlocked() { return (hasUpgrade(this.layer, 25)) }, 
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) { 
+            buy() { 
+                let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
                 let newCost = Decimal.pow(new Decimal(1.5), x.pow(1.6));
@@ -413,7 +414,8 @@ addLayer("l", {
             unlocked() { return (hasUpgrade(this.layer, 25)) }, 
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) { 
+            buy() { 
+                let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
                 let newCost = Decimal.pow(new Decimal(1.6), x.pow(1.5));
@@ -435,6 +437,7 @@ addLayer("l", {
     },
 
     update(diff) {
+        player[this.layer].ticks =  new Decimal(1);
         if (hasMilestone('q', 7)) {
             generatePoints("l", diff * 0.5);
         }
@@ -442,16 +445,16 @@ addLayer("l", {
             generatePoints("l", diff);
         }
         if (hasUpgrade("r", 22) || hasMilestone("s", 4)) {
-            let ticks = (hasUpgrade("r", 22) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
-            ticks = new Decimal(ticks);
+            player[this.layer].ticks = (hasUpgrade("r", 22) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
+            player[this.layer].ticks = new Decimal(player[this.layer].ticks);
             if (hasMilestone("s", 23)) {
-                ticks = new Decimal(ticks).plus("1e100");
+                player[this.layer].ticks = new Decimal(player[this.layer].ticks).plus("1e100");
             }
             if (layers.l.buyables[11].unlocked() && layers.l.buyables[11].canAfford()) {
-                layers.l.buyables[11].buy(ticks);
+                layers.l.buyables[11].buy(player[this.layer].ticks);
             }
             if (layers.l.buyables[12].unlocked() && layers.l.buyables[12].canAfford()) {
-                layers.l.buyables[12].buy(ticks);
+                layers.l.buyables[12].buy(player[this.layer].ticks);
             }
         }
     },
