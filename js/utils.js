@@ -14,7 +14,7 @@ function canAffordUpgrade(layer, id) {
 	if(tmp[layer].deactivated) return false
 	if (tmp[layer].upgrades[id].canAfford === false) return false
 	let cost = tmp[layer].upgrades[id].cost
-	if (cost !== undefined) 
+	if (cost !== undefined)
 		return canAffordPurchase(layer, upg, cost)
 
 	return true
@@ -194,7 +194,7 @@ function layOver(obj1, obj2) {
 
 function prestigeNotify(layer) {
 	if (layers[layer].prestigeNotify) return layers[layer].prestigeNotify()
-	
+
 	if (isPlainObject(tmp[layer].tabFormat)) {
 		for (subtab in tmp[layer].tabFormat){
 			if (subtabResetNotify(layer, 'mainTabs', subtab))
@@ -349,7 +349,7 @@ function toValue(value, oldValue) {
 		if (checkDecimalNaN(value)) return decimalZero
 		return value
 	}
-	if (!isNaN(oldValue)) 
+	if (!isNaN(oldValue))
 		return parseFloat(value) || 0
 	return value
 }

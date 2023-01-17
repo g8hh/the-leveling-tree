@@ -1,7 +1,7 @@
 * {
 	transition-duration: 0.5s;
 	text-align: center;
-	font-family: "Inconsolata", monospace;
+	font-family: "Changa", monospace;
 	font-weight: bold;
 	table-align: center;
 	margin: auto;
@@ -43,7 +43,7 @@ td {
 }
 
 .upgAlign {
-	vertical-align: 0
+	vertical-align: 0;
 }
 
 .bigUpgAlign {
@@ -170,6 +170,7 @@ ul {
 
 .tooltipBox { 
 	position: relative;
+	line-height: 15px;
   }
   
   .tooltipBox:hover .tooltip{
@@ -203,6 +204,7 @@ ul {
 .overlayThing {
 	z-index: 10000;
 	pointer-events:auto;
+	line-height: 25px;
 }
 
 .sideLayers {
