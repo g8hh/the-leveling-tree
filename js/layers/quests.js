@@ -838,9 +838,9 @@ addLayer("q", {
             done() {return player[this.layer].best.gte(500)}, // Used to determine when to give the milestone
             effectDescription: "Autobuy up to 1,000 passive upgrades/tick",
         },
-        15: {requirementDescription: "Get 10,000 quests",
+        15: {requirementDescription: "Get 5,000 quests",
             unlocked() {return hasMilestone("q", 14)},
-            done() {return player[this.layer].best.gte(10000)}, // Used to determine when to give the milestone
+            done() {return player[this.layer].best.gte(5000)}, // Used to determine when to give the milestone
             effectDescription: "Autobuy up to 100,000 passive upgrades/tick and unlocks the final challenge here!",
         },
         16: {requirementDescription: "Finish the last challenge 100 times",
