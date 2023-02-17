@@ -386,7 +386,8 @@ addLayer("l", {
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    if (ticks.gte(new Decimal(1))) layers.l.buyables[11].buy(ticks.div(2));
+                    player[this.layer].ticks =  player[this.layer].ticks.div(2);
+                    if (ticks.gte(new Decimal(1))) layers.l.buyables[11].buy();
                 }
             },
         },
@@ -430,7 +431,8 @@ addLayer("l", {
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    if (ticks.gte(new Decimal(1))) layers.l.buyables[12].buy(ticks.div(2));
+                    player[this.layer].ticks =  player[this.layer].ticks.div(2);
+                    if (ticks.gte(new Decimal(1))) layers.l.buyables[12].buy();
                 }
             },
         },
@@ -451,10 +453,10 @@ addLayer("l", {
                 player[this.layer].ticks = new Decimal(player[this.layer].ticks).plus("1e100");
             }
             if (layers.l.buyables[11].unlocked() && layers.l.buyables[11].canAfford()) {
-                layers.l.buyables[11].buy(player[this.layer].ticks);
+                layers.l.buyables[11].buy();
             }
             if (layers.l.buyables[12].unlocked() && layers.l.buyables[12].canAfford()) {
-                layers.l.buyables[12].buy(player[this.layer].ticks);
+                layers.l.buyables[12].buy();
             }
         }
     },
