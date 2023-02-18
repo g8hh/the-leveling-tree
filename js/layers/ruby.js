@@ -199,9 +199,9 @@ addLayer("r", {
             unlocked() { return (hasUpgrade("l", 55)) },
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy() {
 
-                let ticks = new Decimal(player[this.layer].ticks);
+            buy() { 
+                let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
 
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
@@ -254,7 +254,6 @@ addLayer("r", {
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
             buy() {
-
                 let ticks = new Decimal(player[this.layer].ticks2);
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
@@ -279,13 +278,15 @@ addLayer("r", {
     },
 
     update(diff) {
+        player[this.layer].ticks =  new Decimal(1);
+        player[this.layer].ticks2 =  new Decimal(1);
         if (hasMilestone('r', 6) || hasMilestone("s", 4)) {
-            let ticks = (hasMilestone('r', 6) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 16) * 1000)
+            player[this.layer].ticks = (hasMilestone('r', 6) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 16) * 1000)
             + (hasMilestone("s", 18) * 1000) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
 
-            ticks = new Decimal(ticks);
+            player[this.layer].ticks = new Decimal(player[this.layer].ticks);
             if (hasMilestone("s", 23)) {
-                ticks = new Decimal(ticks).plus("1e100");
+                player[this.layer].ticks = new Decimal(ticks).plus("1e100");
             }
 
             player[this.layer].ticks = new Decimal(ticks);
@@ -294,9 +295,9 @@ addLayer("r", {
              + (hasMilestone("s", 9) * 2000) + (hasMilestone("s", 16) * 10000) + (hasMilestone("s", 18) * 100000)
              + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
 
-             ticks2 = new Decimal(ticks2);
+             player[this.layer].ticks2 = new Decimal(player[this.layer].ticks2);
              if (hasMilestone("s", 23)) {
-                 ticks2 = new Decimal(ticks2).plus("1e100");
+                player[this.layer].ticks2 = new Decimal(player[this.layer].ticks2).plus("1e100");
              }
 
              player[this.layer].ticks2 = new Decimal(ticks2);
