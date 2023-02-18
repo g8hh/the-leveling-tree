@@ -72,7 +72,7 @@ addLayer("r", {
             description: "Multiplies gold gain by 1,000",
             cost: new Decimal(1),
             unlocked() { return player[this.layer].unlocked },
-            effect() { 
+            effect() {
                 let eff = new Decimal(1000);
                 return eff;
             },
@@ -82,7 +82,7 @@ addLayer("r", {
             description: "Multiplies gold gain by (lvl+1)^1.34",
             cost: new Decimal(2),
             unlocked() { return (hasUpgrade(this.layer, 11)) },
-            effect() { 
+            effect() {
                 let eff = player.points.plus(1).pow(1.34);
                 return eff;
             },
@@ -196,10 +196,12 @@ addLayer("r", {
                 Amount: " + format(player[this.layer].buyables[this.id]) + "\n\
                 XP and gold base exponents are powered to ^" + (data.effect < 10 ? Math.round(data.effect*100)/100 : format(data.effect));
             },
-            unlocked() { return (hasUpgrade("l", 55)) }, 
+            unlocked() { return (hasUpgrade("l", 55)) },
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) { 
+            buy() {
+
+                let ticks = new Decimal(player[this.layer].ticks);
                 cost = tmp[this.layer].buyables[this.id].cost
 
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
@@ -211,13 +213,15 @@ addLayer("r", {
 
                 if (player[this.layer].points.gte(newCost) && ticks.gte(1)) {
                     if (!hasMilestone('r', 6) && !hasMilestone("s", 4)) {
-                        player[this.layer].points = player[this.layer].points.sub(cost)	
+                        player[this.layer].points = player[this.layer].points.sub(cost)
                     }
                     player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(ticks)
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    if (ticks.gte(new Decimal(1))) layers.r.buyables[11].buy(ticks.div(2));
+                    player[this.layer].ticks = player[this.layer].ticks.div(2);
+                    ticks = player[this.layer].ticks;
+                    if (ticks.gte(new Decimal(1))) layers.r.buyables[11].buy();
                 }
             },
         },
@@ -246,10 +250,12 @@ addLayer("r", {
                     Base lvl gain exponent is powered to ^(1/" + format(new Decimal(1).div(data.effect)) + ")";
                 }
             },
-            unlocked() { return (hasUpgrade("r", 25)) }, 
+            unlocked() { return (hasUpgrade("r", 25)) },
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) { 
+            buy() {
+
+                let ticks = new Decimal(player[this.layer].ticks2);
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
                 let newCost = Decimal.pow(new Decimal(1.05), x.pow(1.4));
@@ -258,13 +264,15 @@ addLayer("r", {
 
                 if (player[this.layer].points.gte(newCost) && ticks.gte(1)) {
                     if (!hasMilestone('r', 6) && !hasMilestone("s", 4)) {
-                        player[this.layer].points = player[this.layer].points.sub(cost)	
+                        player[this.layer].points = player[this.layer].points.sub(cost)
                     }
                     player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(ticks)
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    if (ticks.gte(new Decimal(1))) layers.r.buyables[12].buy(ticks.div(2));
+                    player[this.layer].ticks2 = player[this.layer].ticks2.div(2);
+                    ticks = player[this.layer].ticks2;
+                    if (ticks.gte(new Decimal(1))) layers.r.buyables[12].buy();
                 }
             },
         },
@@ -280,6 +288,8 @@ addLayer("r", {
                 ticks = new Decimal(ticks).plus("1e100");
             }
 
+            player[this.layer].ticks = new Decimal(ticks);
+
             let ticks2 = (hasMilestone('r', 6) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 6) * 1000)
              + (hasMilestone("s", 9) * 2000) + (hasMilestone("s", 16) * 10000) + (hasMilestone("s", 18) * 100000)
              + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
@@ -289,11 +299,13 @@ addLayer("r", {
                  ticks2 = new Decimal(ticks2).plus("1e100");
              }
 
+             player[this.layer].ticks2 = new Decimal(ticks2);
+
             if (layers.r.buyables[11].unlocked() && layers.r.buyables[11].canAfford()) {
-                layers.r.buyables[11].buy(ticks);
+                layers.r.buyables[11].buy();
             }
             if (layers.r.buyables[12].unlocked() && layers.r.buyables[12].canAfford()) {
-                layers.r.buyables[12].buy(ticks2);
+                layers.r.buyables[12].buy();
             }
         }
         if (hasMilestone('s', 7)) {
@@ -303,7 +315,7 @@ addLayer("r", {
 
     automate() {
         if (player["s"].autoBuyAll2) {
-            for (let x = 10; x <= 20; x += 10){ 
+            for (let x = 10; x <= 20; x += 10){
                 for (let y = 1; y <= 5; y++) {
                     let z = x + y;
                     if (!hasUpgrade("r", z) && canAffordUpgrade("r", z) && (hasMilestone("s", 4))
@@ -314,14 +326,14 @@ addLayer("r", {
             }
         }
     },
-    
+
     row: 1, // Row the layer is in on the tree (0 is the first row)
 
     hotkeys: [
     ],
     branches: [["g", 3], ["xp", 3]],
 
-    tabFormat: ["main-display", 
+    tabFormat: ["main-display",
     ["prestige-button", "", function (){ return hasMilestone("s", 26) ? {'display': 'none'} : {}}]
     , "buyables", "upgrades", "milestones"],
 

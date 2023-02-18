@@ -18,7 +18,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 	<script src="js/technical/break_eternity.js"></script>
 	<script src="js/technical/layerSupport.js"></script>
-	
+
 	<script src="js/mod.js"></script>
 
 	<script src="js/technical/loader.js"></script>
@@ -70,9 +70,9 @@
 		</div>
 
 		<div id="treeOverlay" v-if="!(tmp.gameEnded && !player.keepGoing) && (player.tab === 'none' || tmp.other.splitScreen || !readData(layoutInfo.showTree))" class="treeOverlay" onscroll="resizeCanvas()"
-			v-bind:class="{ 
-			fullWidth: (player.tab == 'none' || player.navTab == 'none'), 
-			col: (player.tab !== 'none' && player.navTab !== 'none'), 
+			v-bind:class="{
+			fullWidth: (player.tab == 'none' || player.navTab == 'none'),
+			col: (player.tab !== 'none' && player.navTab !== 'none'),
 			left: (player.tab !== 'none' && player.navTab !== 'none')}"
 			 :style="{'margin-top': !readData(layoutInfo.showTree) && player.tab == 'info-tab' ? '50px' : ''}">
 			<div id="version" onclick="showTab('changelog-tab')" class="overlayThing" style="margin-right: 13px" >
@@ -102,14 +102,19 @@
 				</div>
 			</div>
 		</div>
-		
-		<div v-if="!(tmp.gameEnded && !player.keepGoing) && (player.tab === 'none' || tmp.other.splitScreen)" id="treeTab"  onscroll="resizeCanvas()" 
+
+		<div v-if="!(tmp.gameEnded && !player.keepGoing) && (player.tab === 'none' || tmp.other.splitScreen)" id="treeTab"  onscroll="resizeCanvas()"
 			v-bind:class="{ fullWidth: (player.tab == 'none' || player.navTab == 'none'), col: (player.tab !== 'none' && player.navTab !== 'none'), left: (player.tab !== 'none' && player.navTab !== 'none')}">
 			<br><br><br><br>
 			<overlay-head id="fakeHead" style="visibility: hidden;">
 			</overlay-head>
 			<layer-tab :layer="player.navTab == 'none' ? player.tab : player.navTab" :key="'left'"></layer-tab>
 			<bg :layer="player.navTab == 'none' ? player.tab : player.navTab" ></bg>
+
+			<div id="progressXPBarBefore"></div>
+			<div id="progressXPBar" v-bind:style="Decimal.min(new Decimal(7), getPointGen()).toNumber() < 7 ?
+			 {'width': format(player.points.sub(player.points.floor()).times(100), 1) + '%'} :
+			 {'width':'100%'}"></div>
 		</div>
 
 		<!-- Popups -->

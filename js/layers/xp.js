@@ -484,7 +484,8 @@ addLayer("xp", {
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    player[this.layer].ticks = player[this.layer].ticks.div(2)
+                    player[this.layer].ticks = player[this.layer].ticks.div(2);
+                    ticks = player[this.layer].ticks;
                     if (ticks.gte(new Decimal(1))) layers.xp.buyables[11].buy();
                 }
             },
@@ -499,7 +500,7 @@ addLayer("xp", {
             if (hasMilestone("q", 5)) player[this.layer].ticks = 20 + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
             if (hasMilestone("q", 14)) player[this.layer].ticks = 1000 + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
             if (hasMilestone("q", 15)) player[this.layer].ticks = 100000 + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
-            
+
             player[this.layer].ticks = new Decimal(player[this.layer].ticks);
         }
     },

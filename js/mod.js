@@ -18,12 +18,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Some stuff",
+	num: "0.2.0.1",
+	name: "The Leveling Tree",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.2</h3><br>
+		<h3>v0.2.0.1</h3><br>
+		- Added xp bar, yea!<br>
+		<h3>v0.2</h3><br>
 		- Added things.<br>
 		- Added stuff.`
 
