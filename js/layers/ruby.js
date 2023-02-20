@@ -200,7 +200,7 @@ addLayer("r", {
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
 
-            buy() { 
+            buy() {
                 let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
 
@@ -286,10 +286,9 @@ addLayer("r", {
 
             player[this.layer].ticks = new Decimal(player[this.layer].ticks);
             if (hasMilestone("s", 23)) {
-                player[this.layer].ticks = new Decimal(ticks).plus("1e100");
+                player[this.layer].ticks = player[this.layer].ticks.plus("1e100");
             }
 
-            player[this.layer].ticks = new Decimal(ticks);
 
             let ticks2 = (hasMilestone('r', 6) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 6) * 1000)
              + (hasMilestone("s", 9) * 2000) + (hasMilestone("s", 16) * 10000) + (hasMilestone("s", 18) * 100000)
@@ -297,10 +296,8 @@ addLayer("r", {
 
              player[this.layer].ticks2 = new Decimal(player[this.layer].ticks2);
              if (hasMilestone("s", 23)) {
-                player[this.layer].ticks2 = new Decimal(player[this.layer].ticks2).plus("1e100");
+                player[this.layer].ticks2 = player[this.layer].ticks2.plus("1e100");
              }
-
-             player[this.layer].ticks2 = new Decimal(ticks2);
 
             if (layers.r.buyables[11].unlocked() && layers.r.buyables[11].canAfford()) {
                 layers.r.buyables[11].buy();
