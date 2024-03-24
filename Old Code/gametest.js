@@ -288,7 +288,6 @@ function challengeEffect(layer, id){
 
 function challengeVar(layer, id){
 	if (!layers[layer].challenge) return false
-
 	return (tmp[layer].challenges[id].powers)
 }
 

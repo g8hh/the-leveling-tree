@@ -71,7 +71,7 @@ addLayer("l", {
         mult = mult.div(xpLogMult);
         mult = mult.div((hasUpgrade("l", 31)) ? upgradeEffect("l", 31) : new Decimal(1));
         mult = mult.div((hasUpgrade("xp", 45)) ? new Decimal(1000) : new Decimal(1));
-        
+
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -90,7 +90,7 @@ addLayer("l", {
             description: "Base level gain is powered to ^1.1",
             cost: new Decimal(100),
             unlocked() { return player[this.layer].unlocked },
-            effect() { 
+            effect() {
                 let eff = new Decimal(1.1);
                 return eff;
             },
@@ -101,7 +101,7 @@ addLayer("l", {
             description: "Base level gain is powered to ^1.1 again",
             cost: new Decimal(900),
             unlocked() { return (hasUpgrade(this.layer, 11)) },
-            effect() { 
+            effect() {
                 let eff = new Decimal(1.1);
                 return eff;
             },
@@ -112,7 +112,7 @@ addLayer("l", {
             description: "Base level, xp & gold gain is powered to ^1.05 (before this layer effect)",
             cost: new Decimal(2000),
             unlocked() { return (hasUpgrade(this.layer, 12)) },
-            effect() { 
+            effect() {
                 let eff = new Decimal(1.05);
                 return eff;
             },
@@ -123,7 +123,7 @@ addLayer("l", {
             description: "Level UP until level 100 much faster",
             cost: new Decimal(5000),
             unlocked() { return (hasUpgrade(this.layer, 13)) },
-            effect() { 
+            effect() {
                 let maxLv = new Decimal(101);
                 let eff = Decimal.max(new Decimal(1), maxLv.sub(player.points))
                 eff = eff.pow(2);
@@ -136,7 +136,7 @@ addLayer("l", {
             description: "Loot, XP, Gold and Level gain is powered to ^1.2",
             cost: new Decimal(10000),
             unlocked() { return (hasUpgrade(this.layer, 14)) },
-            effect() { 
+            effect() {
                 let eff = new Decimal(1.2);
                 return eff;
             },
@@ -150,7 +150,7 @@ addLayer("l", {
             currencyInternalName: "points",
             currencyLayer: "",
             unlocked() { return (hasUpgrade(this.layer, 15)) },
-            effect() { 
+            effect() {
                 return new Decimal(1.02);
             },
             effectDisplay() { return "^" + format(this.effect()) }, // Add formatting to the effect
@@ -163,7 +163,7 @@ addLayer("l", {
             currencyInternalName: "points",
             currencyLayer: "",
             unlocked() { return (hasUpgrade(this.layer, 21)) },
-            effect() { 
+            effect() {
                 return new Decimal(1.03);
             },
             effectDisplay() { return "^" + format(this.effect()) }, // Add formatting to the effect
@@ -176,7 +176,7 @@ addLayer("l", {
             currencyInternalName: "points",
             currencyLayer: "",
             unlocked() { return (hasUpgrade(this.layer, 22)) },
-            effect() { 
+            effect() {
                 return new Decimal(1.05);
             },
             effectDisplay() { return "^" + format(this.effect()) }, // Add formatting to the effect
@@ -189,7 +189,7 @@ addLayer("l", {
             currencyInternalName: "points",
             currencyLayer: "",
             unlocked() { return (hasUpgrade(this.layer, 23)) },
-            effect() { 
+            effect() {
                 return new Decimal(2);
             },
             effectDisplay() { return "^" + format(this.effect()) }, // Add formatting to the effect
@@ -202,7 +202,7 @@ addLayer("l", {
             currencyInternalName: "points",
             currencyLayer: "",
             unlocked() { return (hasUpgrade(this.layer, 24)) },
-            effect() { 
+            effect() {
                 return new Decimal(1.1);
             },
         },
@@ -367,10 +367,11 @@ addLayer("l", {
                 Amount: " + format(player[this.layer].buyables[this.id]) + "\n\
                 XP Gain mult is powered to ^" + format(data.effect)
             },
-            unlocked() { return (hasUpgrade(this.layer, 25)) }, 
+            unlocked() { return (hasUpgrade(this.layer, 25)) },
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) { 
+            buy() {
+                let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
                 let newCost = Decimal.pow(new Decimal(1.5), x.pow(1.6));
@@ -379,13 +380,15 @@ addLayer("l", {
 
                 if (player[this.layer].points.gte(newCost) && ticks.gte(1)) {
                     if (!hasMilestone("s", 4)) {
-                        player[this.layer].points = player[this.layer].points.sub(cost)	
+                        player[this.layer].points = player[this.layer].points.sub(cost)
                     }
                     player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(ticks)
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    if (ticks.gte(new Decimal(1))) layers.l.buyables[11].buy(ticks.div(2));
+                    player[this.layer].ticks = player[this.layer].ticks.div(2);
+                    ticks = player[this.layer].ticks;
+                    if (ticks.gte(new Decimal(1))) layers.l.buyables[11].buy();
                 }
             },
         },
@@ -410,10 +413,11 @@ addLayer("l", {
                 Amount: " + format(player[this.layer].buyables[this.id]) + "\n\
                 Gold Gain mult is powered to ^" + format(data.effect)
             },
-            unlocked() { return (hasUpgrade(this.layer, 25)) }, 
+            unlocked() { return (hasUpgrade(this.layer, 25)) },
             canAfford() {
                 return player[this.layer].points.gte(tmp[this.layer].buyables[this.id].cost)},
-            buy(ticks=new Decimal(1)) { 
+            buy() {
+                let ticks = player[this.layer].ticks;
                 cost = tmp[this.layer].buyables[this.id].cost
                 let x = new Decimal(player[this.layer].buyables[this.id].plus(ticks).sub(1));
                 let newCost = Decimal.pow(new Decimal(1.6), x.pow(1.5));
@@ -422,19 +426,22 @@ addLayer("l", {
 
                 if (player[this.layer].points.gte(newCost) && ticks.gte(1)) {
                     if (!hasMilestone("s", 4)) {
-                        player[this.layer].points = player[this.layer].points.sub(cost)	
+                        player[this.layer].points = player[this.layer].points.sub(cost)
                     }
                     player[this.layer].buyables[this.id] = player[this.layer].buyables[this.id].add(ticks)
                     player[this.layer].spentOnBuyables = player[this.layer].spentOnBuyables.add(cost) // This is a built-in system that you can use for respeccing but it only works with a single Decimal value
                 }
                 else {
-                    if (ticks.gte(new Decimal(1))) layers.l.buyables[12].buy(ticks.div(2));
+                    player[this.layer].ticks = player[this.layer].ticks.div(2);
+                    ticks = player[this.layer].ticks;
+                    if (ticks.gte(new Decimal(1))) layers.l.buyables[12].buy();
                 }
             },
         },
     },
 
     update(diff) {
+        player[this.layer].ticks =  new Decimal(1);
         if (hasMilestone('q', 7)) {
             generatePoints("l", diff * 0.5);
         }
@@ -442,23 +449,23 @@ addLayer("l", {
             generatePoints("l", diff);
         }
         if (hasUpgrade("r", 22) || hasMilestone("s", 4)) {
-            let ticks = (hasUpgrade("r", 22) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
-            ticks = new Decimal(ticks);
+            player[this.layer].ticks = (hasUpgrade("r", 22) * 10) + (hasMilestone("s", 4) * 10) + (hasMilestone("s", 21) * 1e9) + (hasMilestone("s", 22) * 1e90);
+            player[this.layer].ticks = new Decimal(player[this.layer].ticks);
             if (hasMilestone("s", 23)) {
-                ticks = new Decimal(ticks).plus("1e100");
+                player[this.layer].ticks = new Decimal(player[this.layer].ticks).plus("1e100");
             }
             if (layers.l.buyables[11].unlocked() && layers.l.buyables[11].canAfford()) {
-                layers.l.buyables[11].buy(ticks);
+                layers.l.buyables[11].buy();
             }
             if (layers.l.buyables[12].unlocked() && layers.l.buyables[12].canAfford()) {
-                layers.l.buyables[12].buy(ticks);
+                layers.l.buyables[12].buy();
             }
         }
     },
 
     automate() {
         if (player["s"].autoBuyAll2) {
-            for (let x = 10; x <= 50; x += 10){ 
+            for (let x = 10; x <= 50; x += 10){
                 for (let y = 1; y <= 5; y++) {
                     let z = x + y;
                     if (!hasUpgrade("l", z) && canAffordUpgrade("l", z) && (hasMilestone("s", 4))
