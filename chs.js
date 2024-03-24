@@ -631,6 +631,7 @@ var cnRegReplace = new Map([
     [/^You have made a total of (.+) skills$/, '您总共取得了 $1 的技能'],
     [/^Quest bonus exponent to loot multiplied by (.+). XP softcap starts (.+) later. \(At (.+)$/, '任务奖励指数乘以$1。经验软上限在$2之后启动。\(在 $3'],
     [/^You are gaining (.+) treasures per second$/, '您每秒获得 $1 珍宝'],
+    [/^Next at Infinity levels$/, '下一个在 无限 级'],
     [/^Next at (.+) levels$/, '下一个在 $1 级'],
     [/^Next\: (.+) \/ (.+) gold\t\t\n\t\t$/, '下一个\: $1 \/ $2 黄金\t\t\n\t\t'],
     [/^Next\: (.+) \/ (.+) exp\t\t\n\t\t$/, '下一个\: $1 \/ $2 经验\t\t\n\t\t'],
