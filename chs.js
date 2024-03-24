@@ -538,6 +538,8 @@ var cnExcludeWhole = [
     /^([\d\.]+)e(\d+)x$/,
     /^([\d\.,]+)x$/,
     /^([\d\.,]+)$/,
+    /^e([\d\.,]+)$/,
+    /^\^([\d\.,]+)$/,
     /^([\d\.]+)$/,
     /^1 \+ floor\(\(skills\/10\)\^2\) \= ([\d\.,]+)$/,
 ];
@@ -569,7 +571,8 @@ var cnRegReplace = new Map([
     [/^([\d\.]+)e([\d\.,]+) experience$/, '$1e$2 经验值'],
     [/^([\d\.]+)e([\d\.,]+) loot$/, '$1e$2 战利品'],
     [/^([\d\.]+)e([\d\.,]+) gold$/, '$1e$2 黄金'],
-    [/^You have (.+) gold$/, '你又 $1 黄金'],
+    [/^You have made a total of  (.+) gold$/, '你总计产生了 $1 黄金'],
+    [/^You have (.+) gold$/, '你有 $1 黄金'],
     [/^Base level, xp & gold gain is powered to \^(.+) \(before this layer effect$/, '基础等级，经验和金币获取的效果提高到 \^$1（在此层效果之前'],
     [/^Upgrade 3,1 power goes from (.+)\/(.+) to (.+)\/(.+)$/, '升级3,1的效果从$1\/$2增加到$3\/$4'],
     [/^You have made a total of (.+) gold$/, '你总共赚了 $1 金币'],
